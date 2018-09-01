@@ -1,0 +1,441 @@
+.flinesNS-table {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-family: "Source Sans Pro";
+    position: relative;
+    &-tableContainer {
+        position: relative;
+        overflow: hidden;
+        padding: 60px 0 0 60px;
+        transform: translate(-60px, -40px);
+        width: calc(100% + 60px);
+    }
+    &-tableScrollWrapper {
+        & > div:first-child {
+            position: relative !important;
+        }
+    }
+    &-tableContainerLeftOverlay {
+        width: 60px;
+        position: absolute;
+        background: #fff;
+        left: 0;
+        transform: translateY(-20px);
+        z-index: 10001;
+    }
+    &-tableCustomScrollBar {
+        height: 20px !important;
+    }
+    &-tablePlace {
+        position: relative;
+        height: 2px;
+    }
+    &-tableWrapper {
+        position: relative;
+    }
+    &-tableScrollWrapper {
+        position: absolute;
+    }
+}
+
+.flinesNS-table {
+    &-realTable {
+        position: relative;
+        min-width: 100%;
+        table-layout: fixed;
+        box-sizing: border-box;
+        border: 1px solid #979797;
+        border-radius: 4px;
+        border-spacing: 0;
+        word-break: break-word;
+    }
+    &-row {
+        min-height: 27px;
+        &:first-child {
+            .flinesNS-table-column {
+                border-top-width: 0;
+            }
+        }
+        &:nth-child(2) {
+            .flinesNS-table-column {
+                border-top-width: 0;
+            }
+        }
+    }
+    &-rowActive {
+        .flinesNS-table-column {
+            background: #FDEEE9;
+        }
+        .flinesNS-contentInput {
+            background: transparent;
+        }
+    }
+    &-column {
+        border: 1px solid #979797;
+        border-right-width: 0;
+        border-bottom-width: 0;
+        vertical-align: top;
+        padding: 0;
+        &:first-child {
+            border-left-width: 0;
+            width: 0;
+        }
+        &:nth-child(2) {
+            border-left-width: 0;
+        }
+    }
+    &-columnActive {
+        background: #FDEEE9;
+    }
+    &-cell {
+        position: relative;
+        margin: 7px 10px 7px 13px;
+    }
+}
+
+.flinesNS-table {
+    &-tableHeader {
+        position: absolute;
+        top: -14px;
+        left: -14px;
+        width: 10px;
+        height: 10px;
+        overflow: hidden;
+        margin-right: 4px;
+        vertical-align: top;
+    }
+    &-colHeader {
+        height: 10px;
+        background-color: #E8E8E8;
+        display: block;
+        box-sizing: border-box;
+        border-right: 1px solid #FFFFFF;
+        cursor: pointer;
+        vertical-align: top;
+        &:first-child {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+        &:last-child {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+    }
+    &-colHeaderActive {
+        background-color: #F1592A;
+        &:hover {
+            .flinesNS-table-colHeaderDragIcon {
+                display: block;
+            } 
+        }
+    }
+    &-colHeaderOverlay {
+        position: relative;
+    }
+    &-colHeaderDragIcon {
+        float: left;
+        display: none;
+        width: 7px;
+        height: 10px;
+        position: relative;
+        left: 50%;
+        margin-left: -2px;
+    }
+    &-colHeaderEmptyPlace {
+        margin-top: 14px;
+        position: absolute;
+        background: #FDEEE9;
+        width: 100%;
+        z-index: 1000;
+    }
+    &-addColToolbar {
+        position: absolute;
+        top: -50px;
+        left: -13px;
+        display: block;
+    }
+    &-addColToolbarIcon {
+        list-style: none;
+        height: 44px;
+        width: 62px;
+        position: absolute;
+        z-index: 10002;
+        top: -8px;
+        transform: translateX(-50%);
+        left: 13px;
+        font-size: 12px;
+        &::before {
+            position: absolute;
+            color: #f1592a;
+            left: 25px;
+            top: 15px;
+        }
+        & > span {
+            position: relative;
+            display: block;
+            width: 24px;
+            height: 34px;
+            left: 19px;
+            top: 9px;
+            cursor: pointer;
+        }
+    }
+    &-removeColToolbar {
+        position: absolute;
+        left: 50%;
+        margin-left: -14px;
+        top: -44px;
+        display: block;
+        z-index: 10001;
+    }
+    &-removeColToolbarIcon {
+        display: block;
+        height: 29px;
+        width: 29px;
+        background-color: #FFFFFF;
+        border-radius: 50%;
+        box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        cursor: pointer;
+        &  > i {
+            display: block;
+            width: 29px;
+            height: 29px;
+        }
+    }
+    &-colResizer {
+        height: 0;
+        display: flex;
+        justify-content: flex-end;
+    }
+    &-colResizerGrip {
+        width: 6px;
+        height: 100%;
+        position: absolute;
+        -webkit-transform: translateX(3px);
+        -ms-transform: translateX(-3px);
+        cursor: col-resize;
+        z-index: 10001;
+        &:hover {
+            .flinesNS-table-colResizerGripLine {
+                background: red;
+            }
+        }
+    }
+    &-colResizerGripLine {
+        width: 1px;
+        height: 100%;
+        display: block;
+        margin: 0 auto;
+        background: #979797;
+    }
+}
+
+.flinesNS-table {
+    &-rowHeader {
+        min-height: 27px;
+        width: 10px;
+        background-color: #E8E8E8;
+        box-sizing: border-box;
+        border-bottom: 1px solid #FFFFFF;
+        cursor: pointer;
+        z-index: 10001;
+        &:first-child {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        &:last-child {
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+    }
+    &-rowHeaderActive {
+        background-color: #F1592A;
+        &:hover {
+            .flinesNS-table-rowHeaderDragIcon {
+                display: block;
+            }
+        }
+    }
+    &-rowHeaderOverlay {
+        position: relative;
+    }
+    &-rowHeaderDragIcon {
+        float: left;
+        display: none;
+        width: 10px;
+        height: 7px;
+        position: relative;
+        top: 50%;
+        margin-top: -3px;
+    }
+    &-rowHeaderEmptyPlace {
+        width: 1003px;
+        margin-left: 14px;
+        position: absolute;
+        background: #FDEEE9;
+        height: 100%;
+        z-index: 1000;
+    }
+    &-addRowToolbar {
+        position: absolute;
+        left: -50px;
+        top: -10px;
+        display: block;
+    }
+    &-addRowToolbarIcon {
+        list-style: none;
+        height: 62px;
+        width: 53px;
+        position: absolute;
+        z-index: 10001;
+        top: 19px;
+        transform: translateY(-50%);
+        left: -17px;
+        font-size: 12px;
+        &::before {
+            position: absolute;
+            color: #f1592a;
+            left: 25px;
+            top: 15px;
+        }
+        & > span {
+            position: relative;
+            display: block;
+            width: 34px;
+            height: 24px;
+            left: 18px;
+            top: 9px;
+            cursor: pointer;
+        }
+    }
+    &-removeRowToolbar {
+        position: absolute;
+        left: 4px;
+        top: 50%;
+        margin-top: -17px;
+        display: block;
+        z-index: 10001;
+    }
+    &-removeRowToolbarIcon {
+        display: block;
+        height: 29px;
+        width: 29px;
+        background-color: #FFFFFF;
+        border-radius: 50%;
+        box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        cursor: pointer;
+        & > i {
+            display: block;
+            width: 29px;
+            height: 29px;
+        } 
+    }
+    &-rowHeaderOverlay {
+        position: relative;
+    }
+}
+
+.flinesNS-table {
+    &-rowForColHeaders {
+        height: 0;
+        min-height: 0;
+    }
+    &-colForTableHeader {
+        width: 0;
+        height: 0;
+        position: relative;
+        .flinesNS-table-tableHeader {
+            position: absolute;
+            display: block;
+            width: 100%;
+            top: -14px;
+        }
+    }
+    &-colForColHeader {
+        height: 0;
+        position: relative;
+        .flinesNS-table-colHeader {
+            position: absolute;
+            display: block;
+            width: 100%;
+            top: -14px;
+        }
+    }
+    &-colForRowHeader {
+        width: 0;
+        position: relative;
+        .flinesNS-table-rowHeader {
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: -14px;
+        }
+    }
+}
+
+.flinesNS-table {
+    &-inViewMode {
+        .flinesNS-table-rowForColHeaders {
+            display: none;
+        }
+        .flinesNS-table-rowForColResizers {
+            display: none;
+        }
+        .flinesNS-table-colForRowHeader {
+            display: none;
+        }
+        .flinesNS-table-tableContainerLeftOverlay {
+            background: #F9F9FB;
+        }
+    }
+}
+
+.flinesNS-table {
+    &-isShowColResizer {
+        .flinesNS-table-realTable {
+            &::after {
+                content: ' ';
+                background: green;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                opacity: 0.2;
+                z-index: 10000;
+            }
+        }
+        .flinesNS-table-column {
+            border-left-color: transparent;
+        }
+        .flinesNS-table-colResizerGripLine {
+            display: block;
+            background: red;
+        }
+    }
+}
+
+.flinesNS-table {
+    &-tableContainer {
+        padding: 0;
+        transform: translate(0, 0);
+        width: 100%;
+        overflow: unset;
+    }
+    &-tableScrollWrapper {
+        position: static !important;
+        & > div:first-child {
+            position: static !important;
+        }
+    }
+    &-realTable {
+        position: static !important;
+    }
+    &-column {
+        position: static !important;
+    }
+}

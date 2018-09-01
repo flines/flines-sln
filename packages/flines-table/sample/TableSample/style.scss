@@ -1,0 +1,12 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+.sample {
+    &-tableSample {
+        width: 1140px;
+        margin: 0 auto;
+        margin-top: 60px;
+        background: pink;
+    }
+}

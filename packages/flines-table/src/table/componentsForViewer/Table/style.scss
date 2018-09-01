@@ -1,0 +1,72 @@
+.flinesNS-table {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-family: "Source Sans Pro";
+    position: relative;
+    &-tableContainer {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+    &-tableScrollWrapper {
+        & > div:first-child {
+            position: relative !important;
+        }
+    }
+}
+
+.flinesNS-table {
+    &-realTable {
+        min-width: 100%;
+        table-layout: fixed;
+        box-sizing: border-box;
+        border: 1px solid #979797;
+        border-radius: 4px;
+        border-spacing: 0;
+        word-break: break-word;
+    }
+    &-row {
+        min-height: 27px;
+        &:first-child {
+            .flinesNS-table-column {
+                border-top-width: 0;
+            }
+        }
+    }
+    &-column {
+        min-width: 54px;
+        border: 1px solid #979797;
+        border-right-width: 0;
+        border-bottom-width: 0;
+        vertical-align: top;
+        padding: 0;
+        &:first-child {
+            border-left-width: 0;
+        }
+    }
+    &-cell {
+        position: relative;
+        margin: 7px 10px 7px 13px;
+    }
+}
+
+.flinesNS {
+    &-contentRichView {
+        color: #293F4D;
+        font-size: 14px;
+        line-height: 20px;
+        border: none;
+        background: none;
+        outline: none;
+        &[placeholder]:empty:before {
+            content: attr(placeholder);
+            color: #fff;
+            background: #d8d8d8;
+            padding: 0 18px;
+            cursor: text;
+        }
+        &[placeholder]:empty:focus:before {
+            content: '';
+        }
+    }
+}

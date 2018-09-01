@@ -1,0 +1,50 @@
+{
+  "name": "flines-table",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run sample",
+    "sample": "webpack --watch --config ./config/webpack.sample.js",
+    "build": "webpack --watch --config ./config/webpack.dev.js",
+    "lint": "eslint --ext .js --ext .jsx src/",
+    "precommit": "npm run lint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.5",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.0.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.0",
+    "eslint-plugin-react": "^7.10.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.11",
+    "json-loader": "^0.5.7",
+    "node-sass": "^4.9.1",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^3.12.0",
+    "webpack-merge": "^4.1.3"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "prop-types": "^15.6.2",
+    "react": "^15.6.1",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dom": "^15.6.1",
+    "uuid": "^3.3.2"
+  }
+}
