@@ -1,5 +1,4 @@
-import Editor from './table/Editor';
-import Viewer from './table/Viewer';
+import { TableEditor as Editor, TableViewer as Viewer } from './table/index';
 
 export {
     Editor,

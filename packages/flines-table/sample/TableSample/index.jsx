@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import TableEditor from '../../src/table/Editor';
+import TableEditor from '../../src/index';
 import './style.scss';
 
 const sns = 'sample-';
