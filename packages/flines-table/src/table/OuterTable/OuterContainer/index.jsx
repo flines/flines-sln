@@ -1,20 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import CustomScrollbars from 'react-custom-scrollbars';
-import { tns } from '../Core';
+import { cns } from '../Core';
 
-export default class TableContainer extends PureComponent {
+export default class OuterContainer extends PureComponent {
     render() {
         return (
-            <div className={`${tns}tableContainer`}>
-                <CustomScrollbars className={`${tns}tableScrollWrapper`}>
-                    {this.props.children}
-                </CustomScrollbars>
+            <div className={`${cns}OuterContainer`}>
+                {this.props.children}
             </div>
         );
     }
 }
 
-TableContainer.propTypes = {
+OuterContainer.propTypes = {
     children: PropTypes.node.isRequired
 };

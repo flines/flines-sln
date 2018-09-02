@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import OuterContainer from './OuterContainer';
-import RealOuterTable from './RealOuterTable';
+import classnames from 'classnames';
+import TableContainer from './OuterContainer';
+import RealTable from './RealOuterTable';
 import Row from './InnerTable/Row';
 import Column from './InnerTable/Column';
 import Cell from './InnerTable/Cell';
@@ -14,11 +15,11 @@ import AddColToolbar from './ColToolBars/AddColToolbar';
 import RemoveColToolbar from './ColToolBars/RemoveColToolbar';
 import ColResizer from '../Addons/ColResizer';
 import ContentEdit from '../Addons/RichEditor';
-import HeightLogic from '../TableLogic/HeightLogic';
-import WidthLogic from '../TableLogic/WidthLogic';
-import { styleNS, uuid, getCellId, minRowCount, maxRowCount, minColCount, maxColCount, minColWidth } from './Core';
+import { tableStyleNS, tns, uuid, getCellId, minRowCount, maxRowCount, minColCount, maxColCount, minColWidth } from './Core';
 
 import './style.scss';
+
+const cns = tns;
 
 export default class OuterTable extends PureComponent {
     constructor(props) {
@@ -65,31 +66,32 @@ export default class OuterTable extends PureComponent {
         this.beforeRealRender = this.beforeRealRender.bind(this);
         this.realRender = this.realRender.bind(this);
         this.tableInfo = {};
+        this.rowAttrs = (this.props.data && this.props.data.rowAttrs) || {};
+        this.colAttrs = (this.props.data && this.props.data.colAttrs) || {};
 
         this.state = {
-            containerWidth: false,
+            isLoaded: false,
             selectedRowIndex: -1, // Cell, ColHeader, RowHeader
             selectedColIndex: -1, // Cell, ColHeader, RowHeader
+            hasColOverlay: false, // ColHeader
+            hasRowOverlay: false, // RowHeader
             isSelectAll: false, // TableHeader
             isDragging: false, // ColHeader, RowHeader
-            rowAddToolBarIndex: false, // RowToolbar, RowHeader
-            colAddTooBarIndex: false, // ColToolbar, ColHeader
-            rowReorderIndex: false, // RowHeader
-            colReorderIndex: false, // ColHeader
-            colResizerIndex: false, // ColResizer
-            tableColResized: this.props.tableColResized && this.props.data.tableColResized,
+            isShowAddRowToolbar: false, // RowToolbar, RowHeader
+            isShowAddColToolbar: false, // ColToolbar, ColHeader
+            moveInRowHeaderIndex: -1, // RowHeader
+            moveInColHeaderIndex: -1, // ColHeader
+            isShowColResizer: false, // ColResizer
             rowIds: this.props.data && this.props.data.rowIds,
             colIds: this.props.data && this.props.data.colIds,
-            data: this.props.data && this.props.data.data,
-            rowAttrs: this.props.data && this.props.data.rowAttrs,
-            colAttrs: this.props.data && this.props.data.colAttrs
+            data: this.props.data && this.props.data.data
         };
         this.defineComponentsInConstructor();
     }
 
     defineComponentsInConstructor() { // eslint-disable-line react/sort-comp
-        this.SmartOuterContainer = (props => <OuterContainer {...props}>{props.children}</OuterContainer>);
-        this.SmartRealOuterTable = (props => <RealOuterTable {...props}
+        this.SmartTableContainer = (props => <TableContainer {...props}>{props.children}</TableContainer>);
+        this.SmartRealTable = (props => <RealTable {...props}
             getTableWidth={this.getTableWidth} />);
         this.SmartRow = (props => <Row {...props}>{props.children}</Row>);
         this.SmartColumn = (props => <Column {...props}
@@ -145,21 +147,15 @@ export default class OuterTable extends PureComponent {
     }
 
     componentDidMount() {
-        const isLoaded = this.isContainerLoaded();
-        if (!isLoaded) {
-            setTimeout(() => {
-                this.handlerContainerWidthChanged();
-            }, 0);
+        if (this.smartStyleContainerRef) {
+            this.setTableInfo({
+                containerWidth: this.smartStyleContainerRef.offsetWidth
+            });
+            this.updateTableInfo();
         }
-    }
-
-    getTableWidth() {
-        const { colIds, colAttrs, containerWidth } = this.state;
-        return this.widthLogicRef.getTableWidth({
-            colIds, colAttrs, containerWidth
-        }, {
-            minColWidth
-        });
+        setTimeout(() => {
+            this.startRealRender();
+        }, 0);
     }
 
     changeData() {
@@ -452,9 +448,9 @@ export default class OuterTable extends PureComponent {
 
     setTableElStyle(setStyleCallBack) {
         if (typeof setStyleCallBack === 'function') {
-            if (this.outerTableRef) {
-                setStyleCallBack(this.outerTableRef, {
-                    rootEl: this.outerTableRef
+            if (this.tableRootRef) {
+                setStyleCallBack(this.tableRootRef, {
+                    rootEl: this.tableRootRef
                 });
             }
         }
@@ -479,53 +475,42 @@ export default class OuterTable extends PureComponent {
         return this.renderSmartStyleContainer();
     }
 
-    // todos
-    isContainerLoaded() {
-        const { containerWidth } = this.state;
-        return containerWidth !== false;
-    }
-
-    // todos
-    handlerContainerWidthChanged() {
-        if (this.outerTableRef) {
-            this.setState({
-                containerWidth: this.outerTableRef.offsetWidth
-            });
-        }
-    }
-
-    render() {
+    realRender() {
         const { editable } = this.props;
         const { rowIds, colIds, data,
             selectedRowIndex, selectedColIndex, hasRowOverlay, hasColOverlay,
             isSelectAll, isDragging, isShowAddColToolbar, moveInColHeaderIndex,
-            isShowAddRowToolbar, moveInRowHeaderIndex, isShowColResizer,
-            containerWidth } = this.state;
-        const isLoaded = this.isContainerLoaded();
+            isShowAddRowToolbar, moveInRowHeaderIndex, isShowColResizer } = this.state;
+        const tableRootStyle = classnames(`${tableStyleNS}`, {
+            [`${cns}inViewMode`]: !editable,
+            [`${cns}isShowColResizer`]: isShowColResizer
+        });
         return (
-            <div className={`${styleNS}`} ref={(ref) => { this.outerTableRef = ref; }}>
-                <WidthLogic ref={(ref) => { this.widthLogicRef = ref; }} />
-                <HeightLogic ref={(ref) => { this.heightLogicRef = ref; }} />
-                {isLoaded &&
-                    <this.SmartOuterContainer>
-                        <this.SmartRealOuterTable rowIds={rowIds}
-                            colIds={colIds}
-                            data={data}
-                            selectedRowIndex={selectedRowIndex}
-                            selectedColIndex={selectedColIndex}
-                            hasRowOverlay={hasRowOverlay}
-                            hasColOverlay={hasColOverlay}
-                            isSelectAll={isSelectAll}
-                            isDragging={isDragging}
-                            isShowAddColToolbar={isShowAddColToolbar}
-                            moveInColHeaderIndex={moveInColHeaderIndex}
-                            isShowAddRowToolbar={isShowAddRowToolbar}
-                            moveInRowHeaderIndex={moveInRowHeaderIndex}
-                            isShowColResizer={isShowColResizer} />
-                    </this.SmartOuterContainer>
-                }
+            <div className={tableRootStyle}
+                ref={(tableRootRef) => { this.tableRootRef = tableRootRef; }}>
+                <this.SmartTableContainer>
+                    <this.SmartRealTable rowIds={rowIds}
+                        colIds={colIds}
+                        data={data}
+                        selectedRowIndex={selectedRowIndex}
+                        selectedColIndex={selectedColIndex}
+                        hasRowOverlay={hasRowOverlay}
+                        hasColOverlay={hasColOverlay}
+                        isSelectAll={isSelectAll}
+                        isDragging={isDragging}
+                        isShowAddColToolbar={isShowAddColToolbar}
+                        moveInColHeaderIndex={moveInColHeaderIndex}
+                        isShowAddRowToolbar={isShowAddRowToolbar}
+                        moveInRowHeaderIndex={moveInRowHeaderIndex}
+                        isShowColResizer={isShowColResizer} />
+                </this.SmartTableContainer>
             </div>
         );
+    }
+
+    render() {
+        const { isLoaded } = this.state;
+        return isLoaded ? this.realRender() : this.beforeRealRender();
     }
 }
 
@@ -548,23 +533,16 @@ OuterTable.propTypes = {
 };
 
 OuterTable.childContextTypes = {
-    ColToolBars: PropTypes.func.isRequired,
-    TableHeader: PropTypes.func.isRequired,
-    ColHeaders: PropTypes.func.isRequired,
-    ColReorder: PropTypes.func.isRequired,
-    ColResizer: PropTypes.func.isRequired,
-    RowToolBars: PropTypes.func.isRequired,
-    RowHeaders: PropTypes.func.isRequired,
-    RowReorder: PropTypes.func.isRequired,
-    InnetTable: PropTypes.func.isRequired,
     Row: PropTypes.func.isRequired,
     Column: PropTypes.func.isRequired,
     Cell: PropTypes.func.isRequired,
+    TableHeader: PropTypes.func.isRequired,
     RowHeader: PropTypes.func.isRequired,
     ColHeader: PropTypes.func.isRequired,
     AddRowToolbar: PropTypes.func.isRequired,
     RemoveRowToolbar: PropTypes.func.isRequired,
     AddColToolbar: PropTypes.func.isRequired,
     RemoveColToolbar: PropTypes.func.isRequired,
+    ColResizer: PropTypes.func.isRequired,
     ContentEdit: PropTypes.func.isRequired
 };

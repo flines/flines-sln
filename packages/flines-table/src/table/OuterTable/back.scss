@@ -1,22 +1,14 @@
 @import './Core/base';
 
-$styleNS: #{$baseStyleNS}-tableE-;
-$cns: #{$styleNS}OuterTable-;
+$styleNS: #{$baseStyleNS}-table;
+$cns: #{$styleNS}-;
 
 .#{$styleNS} {
-    &OuterTable{
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        font-family: "Source Sans Pro";
-    }
-}
-
-.#{$cns} {
-    &OuterContainer {
-        width: 100%;
-        position: relative;
-    }
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-family: "Source Sans Pro";
+    position: relative;
 }
 
 .#{$cns} {
