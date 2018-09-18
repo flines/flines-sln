@@ -1,3 +1,5 @@
-import View from './components/View';
+// import View from '/src/components/View';
+import('/src/components/View').then((View) => {
+    document.getElementById('app').appendChild(document.createElement('div', {innerHTML: View.default}));
+});
 
-document.getElementById('app').appendChild(document.createElement('div', {innerHTML: View}));
